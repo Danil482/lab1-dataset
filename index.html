@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOMIN Lab 1 Dataset</title>
+<meta name="description" content="LinkedIn authors, their feeds and the media of their posts, with engagement labels - the Lab 1 dataset of the ITMO course Social Media Analytics, Agents & LLMs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#2DBF9C;--teal-deep:#1F8A70;--ink:#16201F;--graphite:#3C4A48;--slate:#6B7A78;
+  --mist:#9BA8A6;--line:#C9D1D0;--mint:#F2FAF8;--mint-strong:#D5F2EA;--white:#FFFFFF;
+  --bg:var(--white);--card:var(--mint);--text:var(--ink);--body:var(--slate);--panel:var(--ink);
+  --panel-text:#FFFFFF;--panel-body:#C9D1D0;--field:#FFFFFF;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1716;--card:#1C2928;--text:#FFFFFF;--body:#C9D1D0;--panel:#16201F;--field:#16201F;--line:#3C4A48;--mint-strong:#1F3A34;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F1716;--card:#1C2928;--text:#FFFFFF;--body:#C9D1D0;--panel:#16201F;--field:#16201F;--line:#3C4A48;--mint-strong:#1F3A34;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--body);font:400 16px/1.55 Montserrat,Arial,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+@media (min-width:720px){.wrap{padding:0 40px}}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:24px 0}
+.mark{font-weight:700;font-size:20px;letter-spacing:.02em;color:var(--text);text-decoration:none}
+.mark span{color:var(--teal)}
+.partner{display:block;background:#FFFFFF;border-radius:4px;padding:6px 10px;line-height:0}
+.partner img{display:block;height:46px;width:auto}
+.kicker{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+h1,h2,h3{color:var(--text);font-weight:700;margin:0}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.15;max-width:18ch}
+h2{font-size:clamp(24px,3.4vw,32px);line-height:1.2;margin-bottom:24px;max-width:28ch}
+h3{font-size:18px;line-height:1.3;margin:6px 0 6px}
+.hero{padding:40px 0 56px}
+.sub{font-size:18px;max-width:60ch;margin:18px 0 0}
+section{padding:40px 0;border-top:1px solid var(--line)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:720px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+.card{background:var(--card);border-top:3px solid var(--teal);padding:18px 20px 20px}
+.label{font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .label{color:var(--teal)}}
+:root[data-theme="dark"] .label{color:var(--teal)}
+.num{font-weight:700;font-size:32px;color:var(--teal);line-height:1.1;margin:6px 0 4px}
+.card p{margin:0}
+.panel{background:var(--panel);color:var(--panel-body);padding:24px}
+.panel h3{color:var(--panel-text)}
+.panel .kicker{margin-bottom:6px}
+.split{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:880px){.split{grid-template-columns:3fr 2fr}}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep);text-align:left;border-top:2px solid var(--teal);padding:10px 8px}
+td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top}
+td.name{color:var(--text);font-weight:600;white-space:nowrap}
+td.size{white-space:nowrap}
+.hash{font:12px/1.4 ui-monospace,Consolas,monospace;color:var(--body);word-break:break-all}
+.scroll{overflow-x:auto}
+.note{font-size:13px;color:var(--mist);margin-top:12px}
+.source{font-size:12px;color:var(--mist);margin-top:24px}
+.source b{color:var(--text)}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--mint-strong);color:var(--text);padding:1px 5px}
+pre{background:var(--card);border-left:3px solid var(--teal);padding:14px 16px;overflow-x:auto;font:13px/1.5 ui-monospace,Consolas,monospace;color:var(--text);margin:12px 0}
+ol.steps{padding-left:20px;margin:0}
+ol.steps li{margin-bottom:10px}
+ol.steps b{color:var(--text)}
+form{display:grid;gap:14px}
+label.f{display:grid;gap:6px;font-weight:600;font-size:14px;color:var(--panel-text)}
+input,select,textarea{font:inherit;font-size:15px;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:4px;padding:10px 12px;width:100%}
+.panel input,.panel textarea,.panel select{background:#FFFFFF;color:#16201F;border-color:#3C4A48}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--teal);outline-offset:1px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--panel-body)}
+.check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--teal)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button{font:700 15px Montserrat,Arial,sans-serif;background:var(--teal);color:#16201F;border:0;border-radius:4px;padding:12px 20px;cursor:pointer;justify-self:start}
+button[disabled]{opacity:.6;cursor:wait}
+.status{font-size:14px;min-height:1.5em}
+.status.ok{color:var(--teal)}.status.err{color:#FFFFFF}
+.dl{color:var(--teal-deep);font-weight:600;text-decoration:none}
+.dl:hover{text-decoration:underline}
+.pending{color:var(--mist);font-size:13px}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+#gate{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px}
+#gate form{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+#gate input{padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--field);color:var(--text);font:inherit;letter-spacing:.2em;text-transform:uppercase}
+#gate button{padding:12px;border:0;border-radius:6px;background:var(--teal);color:#fff;font:inherit;cursor:pointer}
+#gate .err{color:#D9534F;font-size:13px;min-height:1em;margin:0}
+html.locked body>.wrap{display:none}
+</style>
+</head>
+<body>
+<div id="gate"><form>
+  <p class="kicker">ITMO University · Lab 1 · Dataset</p>
+  <input id="gate-code" autocomplete="off" placeholder="Access code" aria-label="Access code" autofocus>
+  <button type="submit">Enter</button>
+  <p class="err" id="gate-err"></p>
+</form></div>
+<script>
+(function(){
+  const CODE = "7D8EEA";   // cosmetic gate, one code for everyone
+  const root = document.documentElement, gate = document.getElementById("gate");
+  const open = () => { root.classList.remove("locked"); gate.remove(); };
+  let ok = false; try { ok = localStorage.getItem("lab1-gate") === CODE; } catch (e) {}
+  if (ok) return open();
+  root.classList.add("locked");
+  gate.querySelector("form").addEventListener("submit", ev => {
+    ev.preventDefault();
+    if (document.getElementById("gate-code").value.trim().toUpperCase() !== CODE) {
+      document.getElementById("gate-err").textContent = "Wrong code."; return;
+    }
+    try { localStorage.setItem("lab1-gate", CODE); } catch (e) {}
+    open();
+  });
+})();
+</script>
+<div class="wrap">
+
+<header class="top">
+  <a class="mark" href="#"><span>SO</span>MIN</a>
+  <a class="partner" href="https://itmo.ru" rel="noopener"><img src="itmo-logo.png" alt="ITMO University" width="96" height="46"></a>
+</header>
+
+<div class="hero">
+  <p class="kicker">ITMO University · Lab 1 · Dataset</p>
+  <h1>Who engages with a post, and why? Five thousand feeds to find out.</h1>
+  <p class="sub">LinkedIn authors, the feeds they were served and every media file of their posts, with a label for how each post did against its author's usual level. The text is pseudonymised; the media are not.</p>
+</div>
+
+<section>
+  <p class="kicker">What is inside</p>
+  <h2>One release, two archives, one label per post.</h2>
+  <div class="grid g4">
+    <div class="card"><div class="label">Authors</div><div class="num">5,433</div><p>Profiles with their feeds, coded as <code>AUTHOR_xxxx</code>.</p></div>
+    <div class="card"><div class="label">Posts</div><div class="num">151,351</div><p>Feeds as served, reposts included.</p></div>
+    <div class="card"><div class="label">Labelled</div><div class="num">89,018</div><p>Posts with the author's own counters and five earlier posts.</p></div>
+    <div class="card"><div class="label">Media files</div><div class="num">161,589</div><p>Images, videos, PDFs, pages, avatars and logos - each stored once.</p></div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">The task</p>
+  <h2>Did the post do better or worse than its author usually does?</h2>
+  <div class="split">
+    <div class="grid g3">
+      <div class="card"><div class="num">01</div><div class="label">Below</div><h3>Under ×0.577</h3><p>Reactions well under the median of the author's earlier posts. ~20 %.</p></div>
+      <div class="card"><div class="num">02</div><div class="label">Typical</div><h3>Between</h3><p>Within the author's usual range. ~60 %.</p></div>
+      <div class="card"><div class="num">03</div><div class="label">Above</div><h3>Over ×3.182</h3><p>Reactions well above the author's usual level. ~20 %.</p></div>
+    </div>
+    <div class="panel">
+      <p class="kicker">Split</p>
+      <h3>80 / 20 by author, seed 42.</h3>
+      <p>Train: 3,295 authors, 71,395 labelled posts. Test: 824 authors, 17,623 posts. All posts of one author sit on one side. The cutoffs are fitted on train and applied unchanged to test.</p>
+      <p>Plain reposts carry the original's counters, so they have no label and do not count towards the level.</p>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <p class="kicker">Download</p>
+  <h2>Sixteen volumes, one password, sent to you by e-mail.</h2>
+  <div class="split">
+    <div>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Volume</th><th>Size</th><th>SHA-256</th></tr></thead>
+        <tbody id="files"></tbody>
+      </table>
+      </div>
+      <p class="note"><b>core</b> (5 volumes, 50.5 GB): text, labels, manifest, images and PDFs. <b>video</b> (11 volumes, 114.1 GB): the post videos. You can work without the video archive.</p>
+      <p class="note">Each volume is too large for Google Drive to scan for viruses, so a link opens a warning page first: press <b>Download anyway</b>. Check the file against its SHA-256 afterwards.</p>
+    </div>
+    <div class="panel">
+      <p class="kicker">Request the password</p>
+      <h3>Tell us who you are.</h3>
+      <p>The volumes are encrypted. Fill this in and the password arrives at the address you give.</p>
+      <form id="req" novalidate>
+        <label class="f">Full name<input name="name" required autocomplete="name"></label>
+        <label class="f">E-mail<input name="email" type="email" required autocomplete="email"></label>
+        <label class="f">University or organisation<input name="org" required autocomplete="organization"></label>
+        <label class="f">Role
+          <select name="role" required>
+            <option value="">Choose…</option>
+            <option>ITMO student</option><option>Other student</option>
+            <option>Researcher</option><option>Industry</option><option>Other</option>
+          </select>
+        </label>
+        <label class="f">What will you use it for?<textarea name="purpose" rows="3" required></textarea></label>
+        <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="check"><input type="checkbox" name="terms" required><span>I will not try to identify the people behind the codes, and I will not share the data or the password outside my course or project.</span></label>
+        <label class="check"><input type="checkbox" name="consent" required><span>I agree that SOMIN stores my name, e-mail and answers to manage access to this dataset.</span></label>
+        <button type="submit">Send me the password</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Getting started</p>
+  <h2>From volumes to a training table in four steps.</h2>
+  <div class="grid g2">
+    <ol class="steps">
+      <li><b>Download</b> every volume of a set into one folder.</li>
+      <li><b>Check</b> each file against the SHA-256 above:<pre>certutil -hashfile lab1_core.7z.001 SHA256   # Windows
+sha256sum lab1_core.7z.*                    # Linux / macOS</pre></li>
+      <li><b>Unpack</b> by opening the first volume with 7-Zip (Windows), Keka (macOS) or <code>7z</code> (Linux, package <code>p7zip-full</code>); the others are picked up automatically:<pre>7z x lab1_core.7z.001</pre></li>
+      <li><b>Join</b> labels, posts and media - <code>README.md</code> in the archive has the code.</li>
+    </ol>
+    <div>
+      <div class="card">
+        <div class="label">Layout</div>
+<pre>authors/AUTHOR_xxxx.json    profiles
+posts/AUTHOR_xxxx.json      feeds, urn = post code
+media/&lt;ab&gt;/&lt;sha256&gt;.&lt;ext&gt;  media, once per file
+media/manifest.jsonl        post → file
+labels.csv                  author, post, split, label
+split.json                  authors and cutoffs</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Rules of use</p>
+  <h2>The text is coded. The pictures, videos and PDFs are not.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="label">Pseudonymised</div><h3>Text only</h3><p>People, organisations, handles, e-mails, phones and links in the text are replaced by codes. Faces, slide names, logos and voices in the media are left as they are.</p></div>
+    <div class="card"><div class="label">Do not</div><h3>Re-identify anyone</h3><p>Do not try to link a code to a real person, and do not publish examples that would let others do it.</p></div>
+    <div class="card"><div class="label">Keep it</div><h3>Inside the course</h3><p>Use it for the lab, your project or research. Do not re-host the data or pass on the password.</p></div>
+  </div>
+  <p class="source"><b>SOURCE</b> Public LinkedIn profiles and feeds, collected by SOMIN in 2026 for the ITMO course Social Media Analytics, Agents &amp; LLMs.</p>
+</section>
+
+<footer>
+  <span>Social Media Analytics, Agents &amp; LLMs · ITMO University</span>
+  <span>SOMIN · 2026</span>
+</footer>
+</div>
+
+<script>
+// Fill these two in before publishing.
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMM2MCKxbQStHq67i3IZeehzQVlFGc59ElfDb8s1HloZCIcPSkavm2FNZhcWPW5cGp/exec";          // the /exec URL of the Apps Script web app
+const DRIVE_IDS = {
+  "lab1_core.7z.001": "1UEuzJOPCCnMlXW0atu9zbsAYdMNWhmXM",
+  "lab1_core.7z.002": "1YuGKAOXY1SUowWqBanxKnBHG7TB0UOo3",
+  "lab1_core.7z.003": "1sL-tE0Vn4aK76pDcbt0DhpTjCwzaYwyt",
+  "lab1_core.7z.004": "1BMSLb--9ATnX8r5q2u6HlqB3Dtdas7SA",
+  "lab1_core.7z.005": "1gG-7MP81j-LOUB7CdxU3Qci5R9cbMrW1",
+  "lab1_video.7z.001": "1d8j2W5eC713ezHDKVs7OS0_QZMQgn53w",
+  "lab1_video.7z.002": "1Es6zlkTVnoYZSWiCNK6EAvA_Bw_2S6E1",
+  "lab1_video.7z.003": "1WQTlHLxJTtyKodZd3uNRMrlFfD36hNhw",
+  "lab1_video.7z.004": "1LmS62s2njf23OciH_j3Lx6Br0FrStOna",
+  "lab1_video.7z.005": "1IdvWPyuVt0Lek7J8TMiC1kT1Q-UA2DeQ",
+  "lab1_video.7z.006": "1lNINYeANj1KFRbriaZWP20i6xyER9MQC",
+  "lab1_video.7z.007": "1tBP_SPtvmrn6AefJJf-au4foWQNRrsD3",
+  "lab1_video.7z.008": "1wdlxZ1D64-o52YTLkWDYL18AyUJcWWlQ",
+  "lab1_video.7z.009": "1kMAhwZ3lX9xPEV6K1bZn3wPhJF417YDU",
+  "lab1_video.7z.010": "1xtXoN_PeT4j5sNz0OmbNtgvfejszqAoo",
+  "lab1_video.7z.011": "1Q4UL9RNd2kVq-_2xSnk3nDRwMAikSlcf",
+};
+
+const VOLUMES = [
+  ["lab1_core.7z.001",10737418240,"06085b5df908e9f15d7b611a74c1d07674e3433d3f0d4eb319ebfc781ef6de05"],
+  ["lab1_core.7z.002",10737418240,"62361a5b1987099896c2a1519deb547789c66ef6fe1c42fb12dcf7f6df2454ea"],
+  ["lab1_core.7z.003",10737418240,"8f827268da54dfac0967e67d0d44be6b34005a8d0f5314a8906dcf5681fed153"],
+  ["lab1_core.7z.004",10737418240,"8f2b214dab49a32390086b131278edb9b7480aa3937589cacffd722af63234b6"],
+  ["lab1_core.7z.005",7531318585,"0f0f3762f5f6ede3c33b5d519115da7aea175e9e901efd139988db463e005200"],
+  ["lab1_video.7z.001",10737418240,"1ff66987a8cd8d243c73c60a7cff4a628e24e7ee31f74050f57aced3774b82c0"],
+  ["lab1_video.7z.002",10737418240,"2f761f7546c8bdb2143d6b12b0f099125a8ad14c32760d15e21d40e331aa9824"],
+  ["lab1_video.7z.003",10737418240,"40c7ade5566833c8f0c6fec5fc94c07b8478ba36d7113f840a7ef6f2811aa934"],
+  ["lab1_video.7z.004",10737418240,"012e98e4c2bc7128e33ff883175e83e326358733b464f006504a7751b558ba32"],
+  ["lab1_video.7z.005",10737418240,"74f70c823380912ba11fafb5c2030b4137a3a54f359c2b54821b23bc02b43d3c"],
+  ["lab1_video.7z.006",10737418240,"97ae358d0da3fdeac558a38a7ceaf9c7c4b72d8b21d2dd89fd9342182b842c11"],
+  ["lab1_video.7z.007",10737418240,"f595af171a360c0a0a2809a064cdd6f6dd5d7e83cde7a81f409459d14ea2de9a"],
+  ["lab1_video.7z.008",10737418240,"d37579e6b4af733614ad761a74b6ae499e3c58993e86145b018cc703368da0ad"],
+  ["lab1_video.7z.009",10737418240,"5ef344b8d5666833ad388118470fb45551c33bfa353178296f0761eeb9e80c15"],
+  ["lab1_video.7z.010",10737418240,"f9252be27cd6e4acc9bb34ca1bd2775b978bfa20bec50a0fd86d55f826846ae9"],
+  ["lab1_video.7z.011",6733646023,"f6e1efa4f95e388ec8b88737946fd5e29813f653c8e24ef2c972d20ebf7bfbd1"],
+];
+
+const tbody = document.getElementById("files");
+for (const [name, bytes, sha] of VOLUMES) {
+  const id = DRIVE_IDS[name];
+  const cell = id
+    ? `<a class="dl" href="https://drive.google.com/uc?export=download&id=${encodeURIComponent(id)}">${name}</a>`
+    : `${name} <span class="pending">· link soon</span>`;
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td class="name">${cell}</td><td class="size">${(bytes / 1e9).toFixed(1)} GB</td><td class="hash">${sha}</td>`;
+  tbody.appendChild(tr);
+}
+
+const form = document.getElementById("req");
+const status = document.getElementById("status");
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  status.className = "status";
+  if (!form.checkValidity()) {
+    status.className = "status err";
+    status.textContent = "Please fill in every field and tick both boxes.";
+    return;
+  }
+  if (!APPS_SCRIPT_URL) {
+    status.className = "status err";
+    status.textContent = "Requests open soon.";
+    return;
+  }
+  const button = form.querySelector("button");
+  button.disabled = true;
+  status.textContent = "Sending…";
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: new URLSearchParams(new FormData(form)) });
+    const out = await res.json();
+    if (out.ok) {
+      status.className = "status ok";
+      status.textContent = "Done. The password is on its way to " + form.email.value + " - check spam too.";
+      form.reset();
+    } else {
+      status.className = "status err";
+      status.textContent = out.error || "Something went wrong. Try again later.";
+    }
+  } catch (e) {
+    status.className = "status err";
+    status.textContent = "Could not reach the server. Try again later.";
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
